@@ -80,6 +80,7 @@
             var child = queue.children('span'); //遍历queue下的所有span元素
             console.log("child", child.length);
             if (child.length > 0) {
+                alert("你要删除的数字："+child.first().innerHTML);
                 child.first().remove(); //删除第一个span元素
             } else {
                 alert("无内容删除！");
@@ -90,6 +91,7 @@
             var child = queue.children('span');
             console.log("child", child.length);
             if (child.length > 0) {
+                alert("你要删除的数字："+child.last().innerHTML);
                 child.last().remove(); //删除最后一个span元素
             } else {
                 alert("无内容删除！");
