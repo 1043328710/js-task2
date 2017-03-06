@@ -10,38 +10,37 @@
         text-align: center;
     }
     .container{
-        margin-top: 150px;
-        width: 1000px;
+        margin-top: 10px;
+        width: 100%;
         //background-color: yellow;
     }
     .left_box,.right_box {
-        float: left;
-        width: 400px;
-        height: 200px;
-        margin: 0 42.5px;
+        width: 100%;
+        height: 300px;
         //background-color: red;
     }
-    
+
     .queue,.render {
         padding-left: 0px;
+        height: 200px;
     }
     
     span {
         color: #fff;
         background-color: red;
-        width: 50px;
+        width: 40px;
         margin: 10px;
-        display: inline-block;
+        display: block;
         text-align: center;
         font-size: 18px;
         cursor: pointer;
-
+        float: left;
     }
     </style>
 </head>
 
 <body>
-    <h1>任务五：基础JavaScript练习（二）</h1>
+    <h1>任务四：基础JavaScript练习（一）</h1>
     <div class="container">
     <div class="left_box">
          <input type="text" class="form-control" id="num" />
@@ -60,10 +59,10 @@
                 <input class="btn btn-primary btn4" type="button" value="右侧出">
             </div>
         </div>
-        <ul class="queue"> </ul>
+        <div class="queue"> </div>
     </div>
     <div class="right_box">
-        <div class="btn-group" role="group" style="margin-bottom: 50px;" aria-label="...">
+        <div class="btn-group" role="group"  aria-label="...">
   <button type="button" class="btn btn-info toMin">降序</button>
   <button type="button" class="btn btn-warning">||</button>
   <button type="button" class="btn btn-info toMax">升序</button>
@@ -80,7 +79,7 @@
              if(child.length<10){
                   var num = $("#num").val();
             if (checkNum(num)) {
-                queue.prepend("<span style='height:"+num*2+"px;'>" + num + "</span>");
+                queue.prepend("<span style='height:"+num*2+"px;margin-top:"+(200-num*2)+"px'>" + num + "</span>");
             }
         }else{
             alert("抱歉，队列已满！当前队列数："+child.length);
@@ -92,7 +91,7 @@
              if(child.length<10){
             var num = $("#num").val();
             if (checkNum(num)) {
-                queue.append("<span style='height:"+num*2+"px;'>" + num + "</span>");
+                queue.append("<span style='height:"+num*2+"px;margin-top:"+(200-num*2)+"px'>" + num + "</span>");
             }
         }else{
             alert("抱歉，队列已满！当前队列数："+child.length);
@@ -166,7 +165,7 @@
         }
         function rend(data,render){
             for(var i=0;i<data.length;i++){
-              render.append("<span style='height:"+data[i]*2+"px;'>" + data[i] + "</span>");
+              render.append("<span style='height:"+data[i]*2+"px;margin-top:"+(200-data[i]*2)+"px;'>" + data[i] + "</span>");
             }
 
         }
@@ -203,6 +202,7 @@
             var toMax =$(".toMax");
             var render =$(".render");
             toMin.click(function() {   //降序
+                render.empty();
                 var data=getData(queue);
                if(data.length==0){
                 alert("列队为空！");
@@ -211,10 +211,10 @@
                 data=Min(data);
                  console.log("toMin",data);
                  rend(data,render);
-                 render.append("<br />");
                }           
             });
             toMax.click(function() {  //升序
+                render.empty();
                 var data=getData(queue);
                if(data.length==0){
                 alert("列队为空！");
@@ -223,7 +223,6 @@
                 data=Max(data);
                  console.log("toMax",data);
                  rend(data,render);
-                 render.append("<br />");
                }    
             });
 
