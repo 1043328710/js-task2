@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>任务四：基础JavaScript练习（一）</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+    h1 {
+        text-align: center;
+    }
+    
+    .container {
+        width: 100%;
+        //background-color: red;
+    }
+    
+    .queue {
+        padding-left: 0px;
+    }
+    textarea{
+        margin: 0 auto;
+        width: 100%;
+        height: 200px;
+    }
+    .insert {
+        color: #fff;
+        background-color: red;
+        width: 50px;
+        height: 50px;
+        margin: 10px;
+        display: block;
+        float: left;
+        line-height: 50px;
+        text-align: center;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <h1>任务六：基础JavaScript练习（三）</h1>
+    <div class="container">
+       <textarea name="val" id="val" cols="30" rows="10"  placeholder="请输入字符并用不同符号分隔"></textarea>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                <input class="btn btn-primary btn1" id="btn1"type="button" value="存入">
+            </div>
+            <div class="col-md-4">
+                  <input type="text" class="form-control" id="val1" />
+            </div>
+            <div class="col-md-4">
+                <input class="btn btn-primary btn2" id="btn2" type="button" value="查询">
+            </div>
+        </div>
+        <ul id="queue">
+        </ul>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    window.onload = function() {
+        var data=[];
+        function getData(queue){  //获得存入的值
+               var val=document.getElementById('val').value;
+               var reg=/[^0-9a-zA-Z\u4e00-\u9fa5]+/g;//非数字，英文，中文
+              // var newVal=val.replace(reg, " ");
+              // console.log("val2",newVal);
+            var newVal=val.split(reg).filter(function(e) {  //把含有数字 英文 中文 分割成数组 并筛选去掉空字符的 。分开写怎么就不行了
+                if(e!=null&&e.length>0){
+                    return true;        
+                }  
+            else
+                return false;
+            });  
+            data=data.concat(newVal); //把newVal 存入data中
+            console.log("所有存入的值",data);
+            document.getElementById('val').value=""; //清空value
+            return data;
+        }
+      
+        // function render(newVal,queue) {
+        //     console.log(newVal);
+        //     for(var i=0;i<newVal.length;i++){
+        //        var newSpan=document.createElement("span");
+        //        newSpan.innerHTML=newVal[i];
+        //        queue.appendChild(newSpan);
+        //     }
+        // }
+        function research(val1){
+            var queue=document.getElementById("queue");
+            console.log("查找的值:",val1);
+          queue.innerHTML=data.map(function(e){
+            if(val1!=null&&val1.length>0){    //val==null是存入  存入直接遍历打印return中的div 否则查找元素
+                 var reg=new RegExp(val1,"g");  //g是遍历完全  找到第一个任然继续           
+                 e=e.replace(reg,"<span style='background-color:yellow'>"+val1+"</span>");//查找data中的元素（e）是否右reg（val） 有的话 就添加一个span标签
+        }
+            return "<div class='insert'>"+e+"</div>";
+            
+          }).join('');  //用map遍历 把所有的相符合子元素拼接起来放入queue中
+          console.log("queue：",queue.innerHTML);
+
+        }
+
+        function init() {
+            
+            var btn1=document.getElementById("btn1");
+            var btn2=document.getElementById("btn2");
+
+            btn1.onclick=function(){ //存入
+                 var data=getData(queue);
+                research();
+            }
+            btn2.onclick=function(){ //查找
+                var val1=document.getElementById("val1").value;
+                research(val1);
+            }
+            queue.onclick=function(event){
+                var x = event.target || event.srcElement; //IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的
+                var tagName = x.tagName;
+                console.log("tagName", tagName);
+                if (tagName == "DIV") { //防止点到queue直接把queue删了 
+                    x.remove();
+                }
+
+            }
+
+        }
+        init();
+
+    }
+    </script>
+</body>
+
+</html>
