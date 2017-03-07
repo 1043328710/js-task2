@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<style>
+#swrap {
+    width: 800px;
+    height: 300px;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+div {
+    width: 42%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    margin: 0 4%;
+    background-color: #fff;
+}
+
+.btn_box {
+    border: none;
+    width: 500px;
+    height: 100px;
+    margin: 50px auto;
+}
+
+button {
+    width: 42%;
+    height: 70%;
+    margin: 0 4%;
+}
+</style>
+
+<body>
+    <div id="swrap">
+        <div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <div class="btn_box">
+        <button id="pre">前序</button>
+        <button id="in">中序</button>
+        <button id="post">后序</button>
+    </div>
+    <script>
+    //先序遍历
+    function preOrder(node) {
+        console.log("node", !(node == null));
+        if (node != null) {
+            arr.push(node);
+            console.log("arr1", arr);
+            preOrder(node.firstElementChild);
+            preOrder(node.lastElementChild);
+        }
+    }
+    //使用递归方式实现中序遍历
+    function inOrder(node) {
+        if (node != null) {
+            inOrder(node.firstElementChild); //先访问左子树
+            arr.push(node); //再访问根节点  将根节点放入arr中
+            console.log("arr2", arr);
+            inOrder(node.lastElementChild); //最后访问右子树
+        }
+    }
+    //后序遍历
+    function postOrder(node) {
+        if (node != null) {
+            postOrder(node.firstElementChild);
+            postOrder(node.lastElementChild);
+            arr.push(node);
+        }
+    }
+
+    function show() {
+        for (var i = 0; i < arr.length; i++) {
+            (function(i) {
+                setTimeout(function() {
+                    if (last != null) {
+                        last.style.background = "white";
+                    } 
+                    if(i==arr.length-1){
+                    	flag=true;
+                    }
+                    console.log("arr", i);
+                    arr[i].style.background = "red";
+                    last = arr[i];
+
+                }, i * 1000);
+            })(i);
+        }
+    }
+    //初始化
+    function reset() {
+        arr = [];
+        if (last != null) {
+            last.style.background = "white";
+        }
+    }
+    var pre = document.getElementById("pre");
+    var inO = document.getElementById("in");
+    var post = document.getElementById("post");
+    var swrap = document.getElementById("swrap");
+    var last;
+    var arr = [];
+    var flag = true; //遍历完才可进行再次点击
+    pre.onclick = function() {
+    	console.log("flag",flag);
+        if (flag) {
+            flag = false;
+            console.log("flag",flag);
+            reset();
+            preOrder(swrap);
+            show();
+        } else
+            alert("请遍历完成后再试！");
+    }
+    inO.onclick = function() {
+        if (flag) {
+            flag = false;
+            reset();
+            inOrder(swrap);
+            show();
+        } else
+            alert("请遍历完成后再试！");
+    }
+    
+    post.onclick = function() {
+        if (flag) {
+            flag = false;
+            reset();
+            postOrder(swrap);
+            show();
+        } else
+            alert("请遍历完成后再试！");
+    }
+    
+    </script>
+</body>
+
+</html>
