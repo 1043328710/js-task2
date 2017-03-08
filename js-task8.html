@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>任务八：JavaScript和树（二）</title>
+</head>
+<style>
+#swrap {
+    width: 800px;
+    height: 300px;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+div {
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    margin: 0 5px;
+    background-color: #fff;
+}
+
+.btn_box {
+    border: none;
+    width: 500px;
+    height: 100px;
+    margin: 50px auto;
+}
+
+button {
+    width: 42%;
+    height: 70%;
+    margin: 0 4%;
+}
+</style>
+
+<body>
+    <div id="swrap">1
+        <div>2.1
+            <div>+1
+                <div>+2
+                    <div>3.1
+                        <div>+4</div>
+                    </div>
+                </div>
+                <div>+5</div>
+            </div>
+            <div>3.1
+                <div>4.1</div>
+                <div>4.2</div>
+                <div>4.5</div>
+            </div>
+            <div>3.2
+                <div>4.3</div>
+                <div>4.4</div>
+            </div>
+        </div>
+        <div>2.2
+            <div>+7</div>
+            <div>3.3
+                <div>4.5</div>
+                <div>4.6</div>
+            </div>
+            <div>3.4
+                <div>4.5</div>
+            </div>
+        </div>
+    </div>
+    <div class="btn_box">
+        <form>
+            <select name="cars" id="select">
+                <option value="recursion">递归</option>
+                <option value="scope">广度优先</option>
+                <option value="depth">深度优先</option>
+            </select>
+        </form>
+        <button id="recursion">遍历</button>
+        <input type="text" id="text" />
+        <button id="search">查询</button>
+    </div>
+    <script>
+    //使用递归方式实现遍历
+    function rec(node) {
+        if (node != null) {
+            arr.push(node);
+            //console.log("node.children.length", node.children.length)
+            for (var i = 0; i < node.children.length; i++) {
+                rec(node.children[i]);
+            }
+        }
+    }
+    //使用广度优先实现遍历
+    function sco(node) {
+        if (node != null) {
+            var stack = []; //定义队列
+            stack.push(node); //得到第一层 放入队列
+            var item;
+            while (stack.length) {
+                console.log("item", stack.length);
+                item = stack.shift(); //把队列的第一个 放出
+                arr.push(item); //放入arr中
+                console.log("item", item, item.children, item.children.length);
+                if (item.children && item.children.length) { //判断 item是否存在子元素
+                    for (var i = 0; i < item.children.length; i++) {
+                        stack.push(item.children[i]); //把item所有子元素放入队列中
+                    }
+                    stack.concat(item.children); //连接item子元素 得到新的stack.length
+                }
+            }
+        }
+
+    }
+    //使用深度优先实现遍历
+    function dep(node) {
+        if (node != null) {
+            var stack = []; //定义栈
+            stack.push(node); //得到第一层 放入栈
+            var item;
+            while (stack.length) {
+                console.log("item", stack.length);
+                item = stack.shift(); //把栈的第一个 放出
+                arr.push(item); //放入arr中
+                console.log("item", item, item.children, item.children.length);
+                if (item.children && item.children.length) { //判断 item是否存在子元素
+                    len = item.children.length;
+                    for (; len; len--) {
+                        stack.unshift(item.children[len - 1]); //在stack首部添加 item的所有子元素 
+                    }
+                }
+            }
+        }
+
+    }
+    //去掉空格
+    function trim(str) {
+        return str.replace(/(^\s+)|(\s+$)/g, "");
+    }
+    //显示遍历过程动画
+    function show(text, num) {
+        for (var i = 0; i < arr.length; i++) {
+            (function(i) {
+                setTimeout(function() {
+                    if (last != null) {
+                        last.style.background = "white";
+                    }
+                    if (i == arr.length - 1) { //是否遍历完成
+                        flag = true;
+                    }
+                    console.log("arr", i);
+                    arr[i].style.background = "red";
+                    if (text == trim(arr[i].firstChild.data)) { //是否为所查询的内容
+                        console.log(trim(arr[i].firstChild.data));
+                        arr[i].style.background = "yellow";
+                        num++;
+                        console.log("num" + num);
+                    } else
+                        last = arr[i];
+                    if ((num || num == 0) && i == arr.length - 1) //查询输出查询到几个
+                        alert("找到：" + num + "个" + text);
+                }, i * 500);
+
+            })(i);
+
+        }
+
+    }
+    //初始化
+    function reset() {
+        arr = [];
+        var div = document.getElementsByTagName("div");
+        for (var i = 0; i < div.length; i++)
+            div[i].style.background = "white";
+
+    }
+    var Rec = document.getElementById("recursion");
+    var sea = document.getElementById("search");
+    var swrap = document.getElementById("swrap");
+    var select = document.getElementById("select");
+    var last;
+    var arr = [];
+    var flag = true; //遍历完才可进行再次点击
+    Rec.onclick = function() {
+        if (flag) {
+            flag = false;
+            console.log("select", select.value);
+            reset();
+            switch (select.value) {
+                case 'recursion':
+                    rec(swrap);
+                    break;
+                case 'scope':
+                    sco(swrap);
+                    break;
+                case 'depth':
+                    dep(swrap);
+                    break;
+            }
+            show();
+        } else
+            alert("请遍历完成后再试！");
+    }
+    sea.onclick = function() {
+        var text = document.getElementById("text").value;
+        if (flag) {
+            flag = false;
+            console.log("flag", flag);
+            reset();
+            var num = 0;
+            switch (select.value) {
+                case 'recursion':
+                    rec(swrap);
+                    break;
+                case 'scope':
+                    sco(swrap);
+                    break;
+                case 'depth':
+                    dep(swrap);
+                    break;
+            }
+            show(text, num);
+        } else
+            alert("请遍历完成后再试！");
+    }
+    </script>
+</body>
+
+</html>
