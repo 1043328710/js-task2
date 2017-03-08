@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<style>
+#swrap {
+    width: 800px;
+    height: 300px;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+div {
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    margin: 0 10px;
+    background-color: #fff;
+}
+
+.btn_box {
+    border: none;
+    width: 500px;
+    height: 100px;
+    margin: 50px auto;
+}
+
+button {
+    width: 42%;
+    height: 70%;
+    margin: 0 4%;
+}
+</style>
+
+<body>
+    <div id="swrap">1
+        <div>2
+            <div>1
+                <div>2
+                    <div>3
+                        <div>4</div>
+                    </div>
+                </div>
+                <div>5</div>
+            </div>
+            <div>3
+                <div>4</div>
+                <div>4</div>
+                <div>5</div>
+            </div>
+            <div>3
+                <div>4.3</div>
+                <div>4.4</div>
+            </div>
+        </div>
+        <div>2.2
+            <div>+7</div>
+            <div>3.3
+                <div>4.5</div>
+                <div>4.6</div>
+            </div>
+            <div>3.4
+                <div>4.5</div>
+            </div>
+        </div>
+    </div>
+    <div class="btn_box">
+        <button id="delete">删除</button>
+        <input type="text" id="text" />
+        <button id="add">添加</button>
+    </div>
+    <script>
+    var swrap = document.getElementById("swrap");
+    var del = document.getElementById("delete");
+    var add = document.getElementById("add");
+    var text = document.getElementById("text");
+    var isClick;
+    var flag = true;
+    swrap.onmouseover = function(event) {
+        var x = event.target || event.srcElement; //IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的     
+        if (flag)
+            x.style.background = "yellow";
+    }
+    swrap.onmouseout = function(event) {
+        var x = event.target || event.srcElement; //IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的
+        if (flag)
+            x.style.background = "white";
+    }
+    swrap.onclick = function(event) {
+        var x = event.target || event.srcElement; //IE下,event对象有srcElement属性,但是没有target属性;Firefox下,event对象有target属性,但是没有srcElement属性.但他们的作用是相当的
+
+        if (x == isClick) {
+            flag = true;
+            isClick = "";
+            x.style.background = "yellow";
+        } else if (flag) {
+            x.style.background = "red";
+            isClick = x;
+            flag = false;
+        }
+        console.log(isClick);
+    }
+    del.onclick = function() {
+        isClick.remove();
+        flag = true;
+    }
+    add.onclick = function() {
+        if (text.value == "") {
+            alert("输入不能为空！");
+        } else {
+            var div = document.createElement("div");
+            div.innerHTML = text.value;
+            isClick.appendChild(div);
+            alert("已添加" + div.innerHTML);
+
+            isClick.style.background = "white";
+            isClick = "";
+            flag = true;
+        }
+    }
+    </script>
+</body>
+
+</html>
